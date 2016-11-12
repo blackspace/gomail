@@ -11,7 +11,7 @@ import (
 
 var started = make(chan int)
 
-const TIME = 1 << 20
+const TIME = 1 << 10
 
 func _Server() {
 	mailserver.Start()
