@@ -5,8 +5,8 @@ import (
 	"log"
 )
 
-func SendMail(addr string,port string,content string) {
-	conn,err:=net.Dial("tcp",addr+":"+port)
+func SendMail(addr string,content string) {
+	conn,err:=net.Dial("tcp",addr)
 	defer conn.Close()
 	if err!=nil {
 		log.Println(err)

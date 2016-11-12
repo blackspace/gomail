@@ -35,7 +35,7 @@ func _Server() {
 func _Client() {
 	<-started
 	for i:=0;i<TIME;i++ {
-		mailclient.SendMail("127.0.0.1", "5050", "hello world")
+		mailclient.SendMail("127.0.0.1:5050", "hello world")
 	}
 }
 
