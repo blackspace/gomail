@@ -16,7 +16,7 @@ type _MailBox struct {
 }
 
 func NewMailBox() *_MailBox {
-	return  &_MailBox{_channel:make(chan *Mail,1<<16)}
+	return  &_MailBox{_channel:make(chan *Mail,1<<20)}
 }
 
 func (mb *_MailBox)AddMail(m *Mail) {
