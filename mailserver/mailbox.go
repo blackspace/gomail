@@ -4,7 +4,7 @@ import "net"
 
 type Mail struct {
 	From net.Addr
-	Load interface{}
+	Load string
 }
 
 func NewMail() *Mail {

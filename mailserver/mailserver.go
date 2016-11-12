@@ -6,6 +6,7 @@ import (
 	"github.com/blackspace/goserver/command"
 	_ "github.com/blackspace/goserver/command/help"
 	"github.com/blackspace/goserver/client"
+	"strings"
 )
 
 var runnable_pool=channel.NewRunnablePoolWithChannel()
@@ -16,7 +17,7 @@ func init() {
 	command.Commands.RegistCommand("add_mail",func(clt *client.Client,args ...string) string {
 		m:=NewMail()
 		m.From=clt.RemoteAddr()
-		m.Load =args
+		m.Load =strings.Join(args," ")
 		MailBox.AddMail(m)
 		return ""
 	},"Add a mail")
