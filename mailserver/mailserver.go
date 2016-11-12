@@ -15,9 +15,7 @@ func init() {
 	runnable_pool.Run()
 
 	command.Commands.RegistCommand("add_mail", func(clt *client.Client, args ...string) string {
-		m := NewMail()
-		m.From = clt.RemoteAddr().String()
-		m.Load = strings.Join(args, " ")
+		m := NewMail(clt.RemoteAddr().String(),strings.Join(args, " "))
 		MailBox.AddMail(m)
 		return ""
 	}, "Add a mail")

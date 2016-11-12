@@ -5,8 +5,8 @@ type Mail struct {
 	Load string
 }
 
-func NewMail() *Mail {
-	return &Mail{}
+func NewMail(from,load string) *Mail {
+	return &Mail{From:from,Load:load}
 }
 
 type _MailBox struct {
