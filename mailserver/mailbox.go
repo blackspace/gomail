@@ -1,23 +1,24 @@
 package mailserver
 
 type Mail struct {
+	Number int
 	From string
 	Load string
 }
 
-func NewMail(from,load string) *Mail {
-	return &Mail{From:from,Load:load}
+func _NewMail(number int,from string,load string) *Mail {
+	return &Mail{Number:number,From:from,Load:load}
 }
 
 type _MailBox struct {
 	_channel chan *Mail
 }
 
-func NewMailBox() *_MailBox {
+func _NewMailBox() *_MailBox {
 	return &_MailBox{_channel: make(chan *Mail, 1<<20)}
 }
 
-func (mb *_MailBox) AddMail(m *Mail) {
+func (mb *_MailBox) _AddMail(m *Mail) {
 	mb._channel <- m
 }
 

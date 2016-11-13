@@ -7,6 +7,7 @@ import (
 	_ "github.com/blackspace/goserver/command/help"
 	"github.com/blackspace/gotask/runnable_pool/channel"
 	"strings"
+	"strconv"
 )
 
 var runnable_pool = channel.NewRunnablePoolWithChannel()
@@ -15,8 +16,9 @@ func init() {
 	runnable_pool.Run()
 
 	command.Commands.RegistCommand("add_mail", func(clt *client.Client, args ...string) string {
-		m := NewMail(clt.RemoteAddr().String(),strings.Join(args, " "))
-		MailBox.AddMail(m)
+		n,_:=strconv.Atoi(args[0])
+		m := _NewMail(n,clt.RemoteAddr().String(),(strings.Join(args, " ")))
+		MailBox._AddMail(m)
 		return ""
 	}, "Add a mail")
 }
@@ -31,4 +33,4 @@ func Stop() {
 	_gomail_server.Stop()
 }
 
-var MailBox = NewMailBox()
+var MailBox = _NewMailBox()
