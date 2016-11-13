@@ -20,7 +20,16 @@ func init() {
 		m := _NewMail(n,clt.RemoteAddr().String(),(strings.Join(args, " ")))
 		MailBox._AddMail(m)
 		return ""
-	}, "Add a mail")
+	}, "")
+
+
+	command.Commands.RegistCommand("add_reply", func(clt *client.Client, args ...string) string {
+		n,_:=strconv.Atoi(args[0])
+		m := _NewMail(n,clt.RemoteAddr().String(),(strings.Join(args, " ")))
+		m.IsReply=true
+		MailBox._AddMail(m)
+		return ""
+	}, "")
 }
 
 var _gomail_server = goserver.NewServer()
@@ -34,3 +43,5 @@ func Stop() {
 }
 
 var MailBox = _NewMailBox()
+
+

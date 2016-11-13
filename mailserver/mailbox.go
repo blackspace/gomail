@@ -1,7 +1,11 @@
 package mailserver
 
+import (
+)
+
 type Mail struct {
 	Number int
+	IsReply bool
 	From string
 	Load string
 }
@@ -22,6 +26,8 @@ func (mb *_MailBox) _AddMail(m *Mail) {
 	mb._channel <- m
 }
 
+
 func (mb *_MailBox) GetMail() *Mail {
 	return <-mb._channel
 }
+

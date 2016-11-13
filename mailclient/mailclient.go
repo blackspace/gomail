@@ -27,3 +27,21 @@ func SendMailOnConnect(conn net.Conn, content string) {
 	conn.Write([]byte(s))
 	_number++
 }
+
+
+func SendReply(addr string, number int,content string) {
+	conn, err := net.Dial("tcp", addr)
+	defer conn.Close()
+	if err != nil {
+		log.Println(err)
+	} else {
+		s := strings.Join([]string{"add_reply",strconv.Itoa(number),content,"\r\n"}," ")
+		conn.Write([]byte(s))
+	}
+
+}
+
+func SendReplyOnConnect(conn net.Conn, number int,content string) {
+	s := strings.Join([]string{"add_repy",strconv.Itoa(number),content,"\r\n"}," ")
+	conn.Write([]byte(s))
+}
