@@ -1,10 +1,10 @@
 package main
 
 import (
+	"github.com/blackspace/gomail"
 	"github.com/blackspace/gomail/mailclient"
-	"github.com/blackspace/gomail/mailserver"
+	"github.com/blackspace/gomail/mailstringserver"
 	"log"
-	"net"
 	"sync"
 	"time"
 )
@@ -14,15 +14,15 @@ var started = make(chan int)
 const TIME = 1 << 10
 
 func _Server() {
-	mailserver.Start()
-	defer mailserver.Stop()
+	mailstringserver.Start()
+	defer mailstringserver.Stop()
 	c := 0
 
 	started <- 1
 	start := time.Now()
 
 	for i := 0; i < TIME; i++ {
-		mailserver.MailBox.GetMail()
+		gomail.MailBox.GetMail()
 		c++
 	}
 
@@ -33,16 +33,8 @@ func _Server() {
 
 func _Client() {
 	<-started
-	conn, err := net.Dial("tcp", "127.0.0.1:5050")
-	defer func() {
-		conn.Close()
-	}()
-	if err == nil {
-		for i := 0; i < TIME; i++ {
-			mailclient.SendMailOnConnect(conn, "hello")
-		}
-	} else {
-		log.Println(err)
+	for i := 0; i < TIME; i++ {
+		mailclient.SendMailString("127.0.0.1:5050", "hello world")
 	}
 }
 
