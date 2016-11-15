@@ -6,16 +6,17 @@ import (
 	"encoding/binary"
 	"github.com/blackspace/gomail"
 	"github.com/blackspace/goserver"
+	"net"
 )
 
 type MailBinary struct {
 	Number int64
 	IsReply bool
-	From string
+	From net.Addr
 	Load []byte
 }
 
-func NewMailBinary(number int64,from string,load []byte) *MailBinary {
+func NewMailBinary(number int64,from net.Addr,load []byte) *MailBinary {
 	return &MailBinary{Number:number,From:from,Load:load}
 }
 
@@ -53,14 +54,14 @@ func IsAddReply(buf []byte) bool {
 
 func DoAddMail(clt *client.Client , buf []byte)  bool {
 	n:=int64(binary.BigEndian.Uint64(buf[2:10]))
-	m:=NewMailBinary(n,clt.RemoteAddr().String(),buf[18:])
+	m:=NewMailBinary(n,clt.RemoteAddr(),buf[18:])
 	gomail.MailBox.AddMail(m)
 	return true
 }
 
 func DoAddReply(clt *client.Client , buf []byte)  bool {
 	n:=int64(binary.BigEndian.Uint64(buf[2:10]))
-	m:=NewMailBinary(n,clt.RemoteAddr().String(),buf[10:len(buf)-2])
+	m:=NewMailBinary(n,clt.RemoteAddr(),buf[10:len(buf)-2])
 	m.IsReply=true
 	gomail.MailBox.AddMail(m)
 	return true
@@ -71,7 +72,7 @@ func init() {
 	action.BinaryActions.AddAction(func(buf []byte) bool { return IsAddReply(buf)}, DoAddReply)
 }
 
-var _go_mail_server = goserver.NewServer(goserver.BINARYMODE)
+var _go_mail_server = goserver.NewBinaryServer()
 
 func Start() {
 	_go_mail_server.Start("127.0.0.1", "5050")
